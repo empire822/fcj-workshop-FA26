@@ -27,7 +27,7 @@ chapter: false
 
 &emsp; **Internship period:** From 09/14/2026 to 12/14/2026
 
-![Avatar|220](../static/images/avatar.png)
+![Avatar|220](../static/images/avatar.jpg)
 
 ### Report contents
 
