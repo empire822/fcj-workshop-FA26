@@ -1,0 +1,47 @@
+{{- /*
+  Link render hook.
+
+  Markdown in this repo often writes links between pages the way the folders
+  look on disk, e.g. "5.2-Prerequisite" from the 5.3 page, or
+  "../5.4-Database-setup" from a sub-page of 5.6. In the browser those are
+  resolved against the page URL and point at pages that do not exist.
+
+  This hook resolves a relative link to the real page: it tries the current
+  page first, then each ancestor section (closest first), using GetPage, which
+  is case-insensitive and language-aware. Links to files under static/ are
+  sent through relURL so they keep the site's base path. Anything else
+  (external URLs, mailto:, unknown paths) is left unchanged.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- $href := $dest -}}
+{{- $u := urls.Parse $dest -}}
+{{- $p := .PageInner -}}
+{{- if and $dest (not $u.IsAbs) (not (hasPrefix $dest "//")) -}}
+  {{- if hasPrefix $dest "#" -}}
+    {{- $href = printf "%s%s" $p.RelPermalink $dest -}}
+  {{- else if $u.Path -}}
+    {{- $suffix := "" -}}
+    {{- with $u.RawQuery }}{{ $suffix = printf "?%s" . }}{{ end -}}
+    {{- with $u.Fragment }}{{ $suffix = printf "%s#%s" $suffix . }}{{ end -}}
+    {{- $path := strings.TrimSuffix "/" (strings.TrimPrefix "./" $u.Path) -}}
+    {{- $target := false -}}
+    {{- $candidates := slice $p -}}
+    {{- range $p.Ancestors }}{{ $candidates = $candidates | append . }}{{ end -}}
+    {{- range $candidates -}}
+      {{- if not $target -}}
+        {{- with .GetPage $path }}{{ $target = . }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $target -}}
+      {{- $href = printf "%s%s" $target.RelPermalink $suffix -}}
+    {{- else -}}
+      {{- $file := replaceRE `^(\.{1,2}/)+` "" $u.Path -}}
+      {{- $file = strings.TrimPrefix "static/" (strings.TrimLeft "/" $file) -}}
+      {{- if and $file (fileExists (printf "static/%s" $file)) -}}
+        {{- $href = printf "%s%s" ($file | relURL) $suffix -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- /* chomp trailing newline */ -}}

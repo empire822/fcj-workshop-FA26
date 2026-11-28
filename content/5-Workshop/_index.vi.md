@@ -6,29 +6,39 @@ chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Triển khai SecureTable – Hệ thống quản lý nhà hàng Serverless an toàn trên AWS
+# Xây dựng hệ thống quản lý nhà hàng SecureTable trên nền tảng AWS Serverless
 
-### Tổng quan
+#### Tổng quan
 
-Workshop này hướng dẫn triển khai lại toàn bộ hệ thống **SecureTable** bằng Terraform và script tự động, từ hạ tầng tới kiểm thử bảo mật và dọn dẹp tài nguyên. Người đọc làm theo từ đầu đến cuối sẽ có:
+**AWS Serverless** cho phép xây dựng và triển khai ứng dụng mà không cần trực tiếp quản lý máy chủ. Các dịch vụ như AWS Lambda, Amazon API Gateway và Amazon DynamoDB hỗ trợ xử lý yêu cầu, lưu trữ dữ liệu và mở rộng theo nhu cầu sử dụng, giúp giảm công sức vận hành.
 
-- Một ứng dụng web chạy qua **Amazon CloudFront** (HTTPS), dữ liệu lưu trong **Amazon DynamoDB** và **Amazon S3**.
-- Đăng nhập bằng **Amazon Cognito** (MFA bắt buộc, chỉ admin tạo tài khoản), API qua **Amazon API Gateway** với Cognito authorizer, xử lý bằng **AWS Lambda**.
-- Lớp bảo vệ **AWS WAF** bật/tắt bằng một cờ, giám sát bằng **Amazon CloudWatch**, cảnh báo qua **Amazon SNS**, kiểm soát chi phí bằng **AWS Budgets**.
-- Pipeline **DevSecOps** trên GitHub Actions và một lệnh dọn sạch tài nguyên để chi phí về 0 USD.
+Trong workshop này, chúng ta sẽ tìm hiểu cách xây dựng và triển khai **SecureTable**, một hệ thống quản lý nhà hàng trên AWS, tập trung vào quản lý nguyên liệu, gọi món bằng mã QR, xử lý đơn hàng, quản lý hóa đơn và theo dõi doanh thu.
 
-### Nội dung
+Hệ thống sử dụng kiến trúc Serverless, kết hợp các dịch vụ AWS để xây dựng giao diện web, xử lý nghiệp vụ, xác thực người dùng, lưu trữ dữ liệu và giám sát hoạt động.
 
-1. [Giới thiệu](5.1-workshop-overview/)
-2. [Các bước chuẩn bị](5.2-prerequiste/)
-3. [Triển khai hạ tầng bằng Terraform](5.3-deploy-infrastructure/)
-4. [Tài khoản Cognito và kiểm thử API](5.4-cognito-api/)
-5. [Đưa frontend lên S3 + CloudFront](5.5-frontend/)
-6. [Bảo mật: WAF và pipeline DevSecOps](5.6-security/)
-7. [Giám sát, kiểm thử và chi phí](5.7-monitoring/)
-8. [Dọn dẹp tài nguyên](5.8-cleanup/)
+Các thành phần chính được triển khai gồm:
 
-### Minh chứng sản phẩm chạy thực tế
+- **Frontend – Amazon S3 & Amazon CloudFront:** Lưu trữ và phân phối giao diện web cho khách hàng và nhân viên qua HTTPS.
+- **Authentication – Amazon Cognito & AWS IAM:** Xác thực nhân viên, phân quyền và kiểm soát quyền truy cập tài nguyên AWS.
+- **Backend – AWS Lambda & Amazon API Gateway:** Xây dựng API phục vụ đặt món, quản lý bàn, hóa đơn, bếp, kho và báo cáo.
+- **Database – Amazon DynamoDB:** Lưu trữ dữ liệu nhà hàng và sử dụng DynamoDB Transactions cho các thao tác cần đảm bảo tính nhất quán.
+- **Automation – Amazon EventBridge Scheduler & Amazon SNS:** Lập lịch báo cáo, sao lưu dữ liệu và gửi thông báo qua email.
+- **Monitoring & Security – Amazon CloudWatch, AWS CloudTrail & AWS WAF:** Theo dõi hệ thống, ghi nhận hoạt động AWS và bổ sung biện pháp bảo vệ web khi WAF được bật.
 
-- **Video demo:** *(nhóm bổ sung link video)*
-- **Link sản phẩm (CloudFront):** *(nhóm bổ sung khi demo)*
+Sau khi hoàn thành workshop, chúng ta sẽ có một hệ thống SecureTable hoạt động trên AWS: khách hàng quét QR để đặt món, nhân viên thực hiện các nghiệp vụ quản lý và người quản trị theo dõi dữ liệu vận hành.
+
+Workshop cũng trình bày cách kiểm thử, giám sát và tối ưu tài nguyên dựa trên các nguyên tắc của **AWS Well-Architected Framework**.
+
+
+#### Nội dung
+
+1. [Tổng quan & Kiến trúc hệ thống](5.1-System-overview/)
+2. [Chuẩn bị](5.2-Prerequisite/)
+3. [Triển khai Frontend](5.3-Frontend-dev/)
+4. [Thiết lập cơ sở dữ liệu](5.4-Database-setup/)
+5. [Xác thực & Phân quyền](5.5-Auth/)
+6. [Xây dựng Backend](5.6-Backend-dev/)
+7. [Tự động hóa Báo cáo & Sao lưu dữ liệu](5.7-Automation/)
+8. [Tăng cường Bảo mật & Giám sát hệ thống](5.8-Security/)
+9. [Kiểm thử Hệ thống từ đầu đến cuối](5.9-E2E-testing/)
+10. [Dọn dẹp Tài nguyên](5.10-Cleanup/)

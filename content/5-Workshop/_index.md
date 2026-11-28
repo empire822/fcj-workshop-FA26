@@ -6,29 +6,39 @@ chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Deploying SecureTable – A Secure Serverless Restaurant Management System on AWS
+# Building the SecureTable Restaurant Management System with AWS Serverless
 
-### Overview
+#### Overview
 
-This workshop shows how to redeploy the whole **SecureTable** system with Terraform and automation scripts, from infrastructure to security testing and cleanup. By following it end to end you will have:
+**AWS Serverless** enables developers to build and deploy applications without managing servers directly. Services such as AWS Lambda, Amazon API Gateway, and Amazon DynamoDB handle requests, store data, and scale according to demand, reducing operational overhead.
 
-- A web app served through **Amazon CloudFront** (HTTPS), with data stored in **Amazon DynamoDB** and **Amazon S3**.
-- Sign-in with **Amazon Cognito** (mandatory MFA, admin-only account creation), an API on **Amazon API Gateway** with a Cognito authorizer, and business logic in **AWS Lambda**.
-- An **AWS WAF** layer toggled by a single flag, monitoring with **Amazon CloudWatch**, alerts through **Amazon SNS** and cost control with **AWS Budgets**.
-- A **DevSecOps** pipeline on GitHub Actions and a single command that tears everything down to 0 USD.
+In this workshop, we will learn how to build and deploy **SecureTable**, a restaurant management system on AWS that focuses on ingredient inventory management, QR code ordering, order processing, bill management, and revenue tracking.
 
-### Contents
+The system uses a Serverless architecture, combining AWS services to deliver the web interface, process business logic, authenticate users, store data, and monitor system operations.
 
-1. [Introduction](5.1-workshop-overview/)
-2. [Prerequisites](5.2-prerequiste/)
-3. [Deploying the infrastructure with Terraform](5.3-deploy-infrastructure/)
-4. [Cognito accounts and API testing](5.4-cognito-api/)
-5. [Frontend on S3 + CloudFront](5.5-frontend/)
-6. [Security: WAF and the DevSecOps pipeline](5.6-security/)
-7. [Monitoring, testing and cost](5.7-monitoring/)
-8. [Cleaning up resources](5.8-cleanup/)
+The main components we will deploy include:
 
-### Proof of a working product
+- **Frontend – Amazon S3 & Amazon CloudFront:** Host and deliver web interfaces for customers and staff over HTTPS.
+- **Authentication – Amazon Cognito & AWS IAM:** Authenticate staff, manage permissions, and control access to AWS resources.
+- **Backend – AWS Lambda & Amazon API Gateway:** Build APIs for ordering, table and bill management, kitchen operations, inventory management, and reporting.
+- **Database – Amazon DynamoDB:** Store restaurant data and use DynamoDB Transactions for operations that require data consistency.
+- **Automation – Amazon EventBridge Scheduler & Amazon SNS:** Schedule reports and data backups, and send email notifications.
+- **Monitoring & Security – Amazon CloudWatch, AWS CloudTrail & AWS WAF:** Monitor the system, record AWS activity, and provide additional web protection when WAF is enabled.
 
-- **Demo video:** *(team to add link)*
-- **Product link (CloudFront):** *(team to add during the demo)*
+By the end of this workshop, we will have a working SecureTable system deployed on AWS: customers can scan QR codes to place orders, staff can manage restaurant operations, and administrators can view operational data.
+
+The workshop also covers testing, monitoring, and resource optimization based on the principles of the **AWS Well-Architected Framework**.
+
+
+#### Content
+
+1. [System Overview & Architecture](5.1-System-overview/)
+2. [Prerequisites](5.2-Prerequisite/)
+3. [Frontend Deployment](5.3-Frontend-dev/)
+4. [Database Setup](5.4-Database-setup/)
+5. [Authentication & Authorization](5.5-Auth/)
+6. [Backend Development](5.6-Backend-dev/)
+7. [Automated Reporting & Data Backup](5.7-Automation/)
+8. [Security Hardening & System Monitoring](5.8-Security/)
+9. [End-to-End System Testing](5.9-E2E-testing/)
+10. [Resource Cleanup](5.10-Cleanup/)
